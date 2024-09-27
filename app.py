@@ -5,6 +5,7 @@ import markdown
 import re
 from datetime import datetime
 from config import VERSION
+import sys
 
 
 app = Flask(__name__)
@@ -19,6 +20,17 @@ os.makedirs(app.config['ANALYSIS_FOLDER'], exist_ok=True)
 # Globale Variablen für Tickets
 ticket_number = 1
 tickets = {}
+
+def find_cdb_executable():
+    possible_paths = [
+        r'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe',
+        r'C:\Program Files\Windows Kits\10\Debuggers\x64\cdb.exe',
+        # Weitere mögliche Pfade hinzufügen
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+    return None
 
 def get_exception_description(code):
     exception_codes = {
@@ -43,7 +55,11 @@ def get_exception_description(code):
     return exception_codes.get(code, 'Unbekannter Fehler')
 
 def analyze_dump(dump_file_path, ticket_number):
-    debugger_path = r'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe'  # Pfad anpassen
+    debugger_path = find_cdb_executable()
+    if debugger_path is None:
+        flash('cdb.exe wurde nicht gefunden. Bitte installieren Sie die Windows Debugging Tools.')
+        return "Debugger nicht gefunden", "Bitte installieren Sie die Windows Debugging Tools."
+
     command = f'"{debugger_path}" -z "{dump_file_path}" -c "!analyze -v; q"'
 
     try:
