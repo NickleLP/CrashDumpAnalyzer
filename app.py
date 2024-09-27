@@ -1,8 +1,10 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory
 import subprocess
+import markdown
 import re
 from datetime import datetime
+from config import VERSION
 
 
 app = Flask(__name__)
@@ -130,8 +132,16 @@ def upload_file():
             return redirect(url_for('upload_file'))
         else:
             flash('Bitte eine gültige .dmp-Datei hochladen')
-            return redirect(request.url)
-    return render_template('index.html', tickets=tickets)
+            return redirect(url_for('upload_file'))
+    return render_template('index.html', tickets=tickets, version=VERSION)
+
+@app.route('/changelog')
+def changelog():
+    with open('changelog.md', 'r', encoding='utf-8') as f:
+        content = f.read()
+    # Konvertieren von Markdown zu HTML
+    changelog_html = markdown.markdown(content)
+    return render_template('changelog.html', changelog=changelog_html, version=VERSION)
 
 @app.route('/analysis/<int:ticket_number>')
 def view_analysis(ticket_number):

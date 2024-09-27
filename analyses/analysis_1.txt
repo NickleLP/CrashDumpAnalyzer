@@ -25,26 +25,27 @@ Microsoft (R) Windows Debugger Version 10.0.26100.1742 AMD64
 Copyright (c) Microsoft Corporation. All rights reserved.
 
 
-Loading Dump File [C:\Users\Jean-Luc\Desktop\Crashdumpanalyzer git\CrashDumpAnalyzer\crash_dump_analyzer\uploads\dump_1.dmp]
+Loading Dump File [C:\Users\Jean-Luc\Desktop\Crashdumpanalyzer git\CrashDumpAnalyzer\uploads\dump_1.dmp]
 User Mini Dump File: Only registers, stack and portions of memory are available
 
 Symbol search path is: srv*
 Executable search path is: 
-Windows 10 Version 19045 MP (8 procs) Free x64
-Product: WinNt, suite: SingleUserTS
-Edition build lab: 19041.1.amd64fre.vb_release.191206-1406
-Debug session time: Wed Sep 18 16:17:04.000 2024 (UTC + 2:00)
+Windows 10 Version 22631 MP (8 procs) Free x86 compatible
+Product: WinNt, suite: SingleUserTS Personal
+Edition build lab: 22621.1.amd64fre.ni_release.220506-1250
+Debug session time: Sun Sep 15 16:52:51.000 2024 (UTC + 2:00)
 System Uptime: not available
-Process Uptime: 0 days 0:00:27.000
-................................................................
-................................................................
-...........
+Process Uptime: 0 days 0:00:51.000
+...............................................................
 This dump file has an exception of interest stored in it.
 The stored exception information can be accessed via .ecxr.
-(43ac.3624): Stack overflow - code c00000fd (first/second chance not available)
+(5cdc.5ce0): Access violation - code c0000005 (first/second chance not available)
 For analysis of this file, run !analyze -v
-ntdll!RtlpAllocateUserBlock+0x10:
-00007ffa`98b90a30 4154            push    r12
+eax=00000000 ebx=00000000 ecx=ffffffff edx=fffffffa esi=00000003 edi=ffffffff
+eip=7796717c esp=00afd5e0 ebp=00afd76c iopl=0         nv up ei pl nz ac po nc
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000212
+ntdll!NtWaitForMultipleObjects+0xc:
+7796717c c21400          ret     14h
 0:000> cdb: Reading initial command '!analyze -v; q'
 *******************************************************************************
 *                                                                             *
@@ -52,12 +53,21 @@ ntdll!RtlpAllocateUserBlock+0x10:
 *                                                                             *
 *******************************************************************************
 
-*** WARNING: Unable to verify timestamp for Qt6Core.dll
+*** WARNING: Check Image - Checksum mismatch - Dump: 0x1bd4b2, File: 0x1b4e58 - C:\ProgramData\dbg\sym\ntdll.dll\80DA5A421b2000\ntdll.dll
 
 KEY_VALUES_STRING: 1
 
+    Key  : AV.Dereference
+    Value: NullClassPtr
+
+    Key  : AV.Fault
+    Value: Write
+
+    Key  : Analysis.CPU.mSec
+    Value: 436
+
     Key  : Analysis.Elapsed.mSec
-    Value: 2294
+    Value: 1876
 
     Key  : Analysis.IO.Other.Mb
     Value: 0
@@ -68,29 +78,32 @@ KEY_VALUES_STRING: 1
     Key  : Analysis.IO.Write.Mb
     Value: 0
 
+    Key  : Analysis.Init.CPU.mSec
+    Value: 46
+
     Key  : Analysis.Init.Elapsed.mSec
-    Value: 233
+    Value: 258
 
     Key  : Analysis.Memory.CommitPeak.Mb
-    Value: 93
+    Value: 112
 
     Key  : Failure.Bucket
-    Value: STACK_OVERFLOW_c00000fd_ucrtbase.dll!_malloc_base
+    Value: NULL_CLASS_PTR_WRITE_c0000005_utweb.exe!Unknown
 
     Key  : Failure.Hash
-    Value: {54245a52-9748-f732-8d96-8133adbf6e27}
+    Value: {39c7787d-10a5-6a97-fc9d-90be587f056b}
 
     Key  : Timeline.Process.Start.DeltaSec
-    Value: 27
+    Value: 51
 
     Key  : WER.OS.Branch
-    Value: vb_release
+    Value: ni_release
 
     Key  : WER.OS.Version
-    Value: 10.0.19041.1
+    Value: 10.0.22621.1
 
     Key  : WER.Process.Version
-    Value: 8.10.6237.502
+    Value: 1.4.0.5871
 
 
 FILE_IN_CAB:  dump_1.dmp
@@ -100,72 +113,69 @@ NTGLOBALFLAG:  0
 APPLICATION_VERIFIER_FLAGS:  0
 
 CONTEXT:  (.ecxr)
-rax=000000000000000d rbx=0000000000000009 rcx=0000016a89f20000
-rdx=000000000000000d rsi=00000000000f0000 rdi=00000000000001c0
-rip=00007ffa98b90a30 rsp=000000683f212000 rbp=00000000000001d0
- r8=00000000000001d0  r9=0000000000000000 r10=0000000000000008
-r11=0000000000000009 r12=0000000000000000 r13=0000016a89f2ab00
-r14=0000016a89f20000 r15=0000016a89f20314
-iopl=0         nv up ei pl zr na po nc
-cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010244
-ntdll!RtlpAllocateUserBlock+0x10:
-00007ffa`98b90a30 4154            push    r12
+eax=00000000 ebx=fffffffa ecx=ffffffff edx=fffffffa esi=00c5a8f0 edi=00c5a900
+eip=779559e5 esp=00afdf98 ebp=00afe028 iopl=0         nv up ei pl nz ac po cy
+cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00010213
+ntdll!RtlpWaitOnCriticalSection+0x95:
+779559e5 ff4014          inc     dword ptr [eax+14h]  ds:002b:00000014=????????
 Resetting default scope
 
 EXCEPTION_RECORD:  (.exr -1)
-ExceptionAddress: 00007ffa98b90a30 (ntdll!RtlpAllocateUserBlock+0x0000000000000010)
-   ExceptionCode: c00000fd (Stack overflow)
+ExceptionAddress: 779559e5 (ntdll!RtlpWaitOnCriticalSection+0x00000095)
+   ExceptionCode: c0000005 (Access violation)
   ExceptionFlags: 00000000
 NumberParameters: 2
-   Parameter[0]: 0000000000000001
-   Parameter[1]: 000000683f211ff8
+   Parameter[0]: 00000001
+   Parameter[1]: 00000014
+Attempt to write to address 00000014
 
-PROCESS_NAME:  CutServer.exe
+PROCESS_NAME:  utweb.exe
 
-ERROR_CODE: (NTSTATUS) 0xc00000fd - Eine neue Schutzseite f r den Stapel kann nicht erstellt werden.
+WRITE_ADDRESS:  00000014 
 
-EXCEPTION_CODE_STR:  c00000fd
+ERROR_CODE: (NTSTATUS) 0xc0000005 - Die Anweisung in 0x%p verwies auf Arbeitsspeicher bei 0x%p. Der Vorgang %s konnte im Arbeitsspeicher nicht durchgef hrt werden.
 
-EXCEPTION_PARAMETER1:  0000000000000001
+EXCEPTION_CODE_STR:  c0000005
 
-EXCEPTION_PARAMETER2:  000000683f211ff8
+EXCEPTION_PARAMETER1:  00000001
+
+EXCEPTION_PARAMETER2:  00000014
 
 STACK_TEXT:  
-00000068`3f212000 00007ffa`98b9beda     : 00000000`00000009 00000000`000001d0 00000000`000f0000 00000000`00000000 : ntdll!RtlpAllocateUserBlock+0x10
-00000068`3f212010 00007ffa`98b9b3c7     : 0000016a`89f20000 00000000`00000007 00000000`000001c2 00000000`00000000 : ntdll!RtlpLowFragHeapAllocFromContext+0x88a
-00000068`3f2120d0 00007ffa`96aafde6     : 00000000`00000000 00000000`000001c2 0000016a`89f2a5c0 00007ffa`3eeb0000 : ntdll!RtlpAllocateHeapInternal+0x9a7
-00000068`3f2121e0 00007ffa`3eed28d1     : 00000000`00000008 00007ffa`98b8bd86 00000000`00000000 00000000`00000208 : ucrtbase!_malloc_base+0x36
-00000068`3f212210 00000000`00000008     : 00007ffa`98b8bd86 00000000`00000000 00000000`00000208 00000000`000000d8 : Qt6Core+0x1728d1
-00000068`3f212218 00007ffa`98b8bd86     : 00000000`00000000 00000000`00000208 00000000`000000d8 00007ffa`3eea25de : 0x8
-00000068`3f212220 00000068`3f2126f8     : 00000068`3f2124b0 00007ffa`3eea8c8d 0000016a`8c1f2a3c 00000068`3f212418 : ntdll!RtlGetFullPathName_Ustr+0x956
-00000068`3f212320 00000068`3f2124b0     : 00007ffa`3eea8c8d 0000016a`8c1f2a3c 00000068`3f212418 00000000`00000000 : 0x00000068`3f2126f8
-00000068`3f212328 00007ffa`3eea8c8d     : 0000016a`8c1f2a3c 00000068`3f212418 00000000`00000000 00000068`3f212390 : 0x00000068`3f2124b0
-00000068`3f212330 0000016a`8c1f2a3c     : 00000068`3f212418 00000000`00000000 00000068`3f212390 00000000`000001ac : Qt6Core+0x148c8d
-00000068`3f212338 00000068`3f212418     : 00000000`00000000 00000068`3f212390 00000000`000001ac 00000068`3f212448 : 0x0000016a`8c1f2a3c
-00000068`3f212340 00000000`00000000     : 00000068`3f212390 00000000`000001ac 00000068`3f212448 00007ffa`3f136bf8 : 0x00000068`3f212418
+00afe028 77934ae8     00c64328 ffffffff 00c64334 ntdll!RtlpWaitOnCriticalSection+0x95
+00afe070 779348a9     00afe0a8 000db250 00c5a8f0 ntdll!RtlpEnterCriticalSectionContended+0x228
+00afe078 000db250     00c5a8f0 0069c966 00c64318 ntdll!RtlEnterCriticalSection+0x49
+WARNING: Stack unwind information not available. Following frames may be wrong.
+00afe0a8 000dbace     0069c882 7555fe70 00000000 utweb+0x4b250
+00afe14c 001111b2     0069d5d6 00000000 00000001 utweb+0x4bace
+00affc18 0050133c     00090000 00000000 00c05d5c utweb+0x811b2
+00affc64 76db7ba9     008c9000 76db7b90 00affccc utweb+0x47133c
+00affc74 7795c11b     008c9000 c61a79a1 00000000 kernel32!BaseThreadInitThunk+0x19
+00affccc 7795c09f     ffffffff 77989fc3 00000000 ntdll!__RtlUserThreadStart+0x2b
+00affcdc 00000000     00501417 008c9000 00000000 ntdll!_RtlUserThreadStart+0x1b
 
 
 STACK_COMMAND:  ~0s; .ecxr ; kb
 
-SYMBOL_NAME:  ucrtbase!_malloc_base+36
+SYMBOL_NAME:  utweb+4b250
 
-MODULE_NAME: ucrtbase
+MODULE_NAME: utweb
 
-IMAGE_NAME:  ucrtbase.dll
+IMAGE_NAME:  utweb.exe
 
-FAILURE_BUCKET_ID:  STACK_OVERFLOW_c00000fd_ucrtbase.dll!_malloc_base
+FAILURE_BUCKET_ID:  NULL_CLASS_PTR_WRITE_c0000005_utweb.exe!Unknown
 
-OS_VERSION:  10.0.19041.1
+OS_VERSION:  10.0.22621.1
 
-BUILDLAB_STR:  vb_release
+BUILDLAB_STR:  ni_release
 
-OSPLATFORM_TYPE:  x64
+OSPLATFORM_TYPE:  x86
 
 OSNAME:  Windows 10
 
-IMAGE_VERSION:  10.0.19041.3636
+IMAGE_VERSION:  1.4.0.5871
 
-FAILURE_ID_HASH:  {54245a52-9748-f732-8d96-8133adbf6e27}
+FAILURE_ID_HASH:  {39c7787d-10a5-6a97-fc9d-90be587f056b}
 
 Followup:     MachineOwner
 ---------
