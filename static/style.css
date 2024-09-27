@@ -1,0 +1,160 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+input[type="file"] {
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.ticket {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ticket-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 0;
+    /* Optional: flex-grow hinzufügen, wenn der Titel den verfügbaren Platz einnehmen soll */
+    /* flex-grow: 1; */
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between; /* Elemente links und rechts ausrichten */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.ticket-timestamp {
+    font-size: 0.9em;
+    color: #666;
+    /* Text rechtsbündig ausrichten, falls nötig */
+    text-align: right;
+    /* margin-right entfernen, da es nicht mehr benötigt wird */
+}
+
+.message {
+    color: #000000;
+    background-color: #2dff038c;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #000000;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #777;
+}
+
+.upload-form {
+    background-color: #ffffffab;
+    padding: 30px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.upload-form .form-group {
+    margin-bottom: 20px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 12px 20px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+.custom-file-upload:hover {
+    background-color: #45a049;
+}
+
+#file-upload {
+    display: none;
+}
+
+.btn-upload {
+    padding: 12px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-upload:hover {
+    background-color: #007B9E;
+}
+
+/* Stil für die Drop-Zone */
+#drop-zone {
+    border: 2px dashed #ccc;
+    padding: 30px;
+    text-align: center;
+    color: #ccc;
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s, border 0.2s;
+}
+
+#drop-zone.dragover {
+    border-color: #4CAF50;
+    background-color: #f0fff0;
+    color: #4CAF50;
+}
+
+#drop-zone p {
+    margin: 0;
+}
+
+#file-upload {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}

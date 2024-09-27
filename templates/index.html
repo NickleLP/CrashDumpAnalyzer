@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>CrashDumpAnalyzer</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>CrashDumpAnalyzer</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="message">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" enctype="multipart/form-data" class="upload-form">
+    <div id="drop-zone">
+      <p>Datei hierher ziehen oder klicken, um eine Datei auszuwählen.</p>
+      <input id="file-upload" type="file" name="file" accept=".dmp">
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Hochladen & Analysieren" class="btn-upload">
+    </div>
+  </form>
+  
+
+  <h2>Tickets</h2>
+  {% if tickets %}
+    {% for ticket_num, ticket_info in tickets.items() %}
+      <div class="ticket">
+        <div class="ticket-header">
+          <p class="ticket-title">Ticket {{ ticket_num }}: {{ ticket_info.exe_name }}</p>
+          <span class="ticket-timestamp">{{ ticket_info.timestamp }}</span>
+        </div>
+        <p><strong>Grund des Absturzes:</strong> {{ ticket_info.crash_reason }}</p>
+        <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">Analysebericht ansehen</a></p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Noch keine Tickets vorhanden.</p>
+  {% endif %}
+
+  <footer>
+    &copy; 2024 CrashDumpAnalyzer by NickleLP
+  </footer>
+  <script>
+    const fileUpload = document.getElementById('file-upload');
+    const dropZone = document.getElementById('drop-zone');
+  
+    // Öffnet den Datei-Explorer, wenn auf die Drop-Zone geklickt wird
+    dropZone.addEventListener('click', () => {
+      fileUpload.click();
+    });
+  
+    // Verhindert das Standardverhalten von Drag-and-Drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+  
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  
+    // Fügt Klasse hinzu/entfernt sie, wenn Datei über Drop-Zone ist
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+  
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+  
+    function highlight(e) {
+      dropZone.classList.add('dragover');
+    }
+  
+    function unhighlight(e) {
+      dropZone.classList.remove('dragover');
+    }
+  
+    // Handhabt das Drop-Ereignis
+    dropZone.addEventListener('drop', handleDrop, false);
+  
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+  
+      if (files.length > 0) {
+        // Wir akzeptieren nur eine Datei
+        fileUpload.files = files;
+        updateFileName();
+      }
+    }
+  
+    // Aktualisiert die Anzeige, wenn eine Datei ausgewählt wird
+    fileUpload.addEventListener('change', updateFileName);
+  
+    function updateFileName() {
+      const files = fileUpload.files;
+      if (files.length > 0) {
+        dropZone.querySelector('p').textContent = 'Ausgewählte Datei: ' + files[0].name;
+      } else {
+        dropZone.querySelector('p').textContent = 'Datei hierher ziehen oder klicken, um eine Datei auszuwählen.';
+      }
+    }
+  </script>
+    
+</body>
+</html>
