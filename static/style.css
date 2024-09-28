@@ -190,18 +190,3 @@ footer {
 .changelog-content li {
     margin-bottom: 5px;
 }
-
-.language-selector {
-    text-align: right;
-    margin: 10px;
-}
-
-.language-selector a {
-    margin: 0 5px;
-    text-decoration: none;
-    color: #007BFF;
-}
-
-.language-selector a:hover {
-    text-decoration: underline;
-}
