@@ -1,5 +1,35 @@
 # CrashDumpAnalyzer
 
+## English:
+
+## Prerequisites
+
+- Windows operating system
+- Installed Windows Debugging Tools (cdb.exe)
+
+### Installation of the Windows debugging tools
+
+1. download the Windows 10 SDK: [Windows 10 SDK Download](https://developer.microsoft.com/de-de/windows/downloads/windows-10-sdk/)
+2. start the installation program.
+3. select **"Debugging Tools for Windows ”** and install them.
+
+**Note:** Make a note of the installation path of `cdb.exe`. By default, this is `C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe`.
+
+## Run the application
+
+1. download the latest version of `CrashDumpAnalyzer.exe` from the GitHub releases.
+2. make sure that `cdb.exe` is installed.
+3. run `CrashDumpAnalyzer.exe`.
+4. open a web browser and navigate to `http://localhost:5000`.
+
+## Troubleshooting
+
+- Error:** `Debugger not found`
+  - **Solution:** Make sure that `cdb.exe` is installed in the expected location.
+
+
+## German:
+
 ## Voraussetzungen
 
 - Windows-Betriebssystem
