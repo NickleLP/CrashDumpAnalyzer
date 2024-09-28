@@ -125,7 +125,7 @@ def upload_file():
         if file.filename == '':
             flash('Keine Datei ausgewählt')
             return redirect(request.url)
-        if file and file.filename.endswith('.dmp'):
+        if file and file.filename.lower().endswith('.dmp'):
             # Speichern der Datei
             dump_filename = f"dump_{ticket_number}.dmp"
             dump_path = os.path.join(app.config['UPLOAD_FOLDER'], dump_filename)
