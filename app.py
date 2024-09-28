@@ -1,9 +1,10 @@
 import os
-from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory
+from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory, session
 import subprocess
 import markdown
 import re
 from datetime import datetime
+from flask_babel import Babel, gettext as _, lazy_gettext as _l
 from config import VERSION
 import sys
 
@@ -12,6 +13,10 @@ app = Flask(__name__)
 app.secret_key = 'IhrGeheimerSchlüssel'  # Bitte ändern Sie dies zu einem sicheren Wert
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
+app.config['BABEL_DEFAULT_LOCALE'] = 'de'
+app.config['BABEL_SUPPORTED_LOCALES'] = ['de', 'en']
+
+babel = Babel(app)
 
 # Erstellen der Verzeichnisse, falls sie nicht existieren
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -185,6 +190,16 @@ def view_analysis(ticket_number):
     else:
         flash('Analysebericht nicht gefunden.')
         return redirect(url_for('upload_file'))
+    
+@babel.localeselector
+def get_locale():
+    # Überprüfen, ob eine Sprache in der Session gespeichert ist
+    return session.get('lang', 'de')
+
+@app.route('/set_language/<language>')
+def set_language(language):
+    session['lang'] = language
+    return redirect(request.referrer or url_for('upload_file'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

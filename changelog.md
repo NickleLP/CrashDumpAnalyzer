@@ -5,6 +5,7 @@
 - Bugfix if a capitalized .DMP file was uploaded, it was displayed as invalid. This has been fixed
 - Changelogs are now in English
 
+
 ## Version 1.0.0 - 25.09.2024
 
 - First version of the application

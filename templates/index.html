@@ -1,12 +1,18 @@
 <!doctype html>
-<html lang="de">
+<html lang="{{ get_locale() }}">
 <head>
   <meta charset="UTF-8">
-  <title>CrashDumpAnalyzer</title>
+  <title>{{ _('CrashDumpAnalyzer') }}</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>CrashDumpAnalyzer</h1>
+  <!-- Sprachauswahl -->
+  <div class="language-selector">
+    <a href="{{ url_for('set_language', language='de') }}">Deutsch</a> |
+    <a href="{{ url_for('set_language', language='en') }}">English</a>
+  </div>
+
+  <h1>{{ _('CrashDumpAnalyzer') }}</h1>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -42,11 +48,11 @@
       </div>
     {% endfor %}
   {% else %}
-    <p>Noch keine Tickets vorhanden.</p>
+    <p>{{ _('Noch keine Tickets vorhanden.') }}</p>
   {% endif %}
 
   <footer>
-    &copy; 2024 CrashDumpAnalyzer by NickleLP | Version <a href="{{ url_for('changelog') }}">{{ version }}</a></p>
+    <p>&copy; 2024 CrashDumpAnalyzer by NickleLP | {{ _('Version') }} <a href="{{ url_for('changelog') }}">{{ version }}</a></p>
   </footer>
   <script>
     const fileUpload = document.getElementById('file-upload');
@@ -109,7 +115,6 @@
         dropZone.querySelector('p').textContent = 'Datei hierher ziehen oder klicken, um eine Datei auszuwählen.';
       }
     }
-  </script>
-    
+  </script> 
 </body>
 </html>
