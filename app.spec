@@ -8,7 +8,7 @@ a = Analysis(['app.py'],
              binaries=[],
              datas=[('templates', 'templates'),
                     ('static', 'static'),
-                    ('changelog.md', '.')],  # Fügen Sie diese Zeile hinzu
+                    ('changelog.md', '.')],
              hiddenimports=['jinja2.ext'],
              hookspath=[],
              runtime_hooks=[],

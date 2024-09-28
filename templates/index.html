@@ -2,7 +2,7 @@
 <html lang="{{ get_locale() }}">
 <head>
   <meta charset="UTF-8">
-  <title>{{ _('CrashDumpAnalyzer') }}</title>
+  <title>CrashDumpAnalyzer</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -26,11 +26,11 @@
 
   <form method="post" enctype="multipart/form-data" class="upload-form">
     <div id="drop-zone">
-      <p>Datei hierher ziehen oder klicken, um eine Datei auszuwählen.</p>
+      <p>{{ _(Datei hierher ziehen oder klicken, um eine Datei auszuwählen.) }}</p>
       <input id="file-upload" type="file" name="file" accept=".dmp">
     </div>
     <div class="form-group">
-      <input type="submit" value="Hochladen & Analysieren" class="btn-upload">
+      <input type="submit" value='{{ _("Hochladen & Analysieren") }} ' class="btn-upload">
     </div>
   </form>
   
@@ -43,8 +43,8 @@
           <p class="ticket-title">Ticket {{ ticket_num }}: {{ ticket_info.exe_name }}</p>
           <span class="ticket-timestamp">{{ ticket_info.timestamp }}</span>
         </div>
-        <p><strong>Grund des Absturzes:</strong> {{ ticket_info.crash_reason }}</p>
-        <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">Analysebericht ansehen</a></p>
+        <p><strong>{{ _(Grund des Absturzes:) }}</strong> {{ ticket_info.crash_reason }}</p>
+        <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">{{ _(Analysebericht ansehen) }}</a></p>
       </div>
     {% endfor %}
   {% else %}
@@ -106,13 +106,12 @@
   
     // Aktualisiert die Anzeige, wenn eine Datei ausgewählt wird
     fileUpload.addEventListener('change', updateFileName);
-  
     function updateFileName() {
       const files = fileUpload.files;
       if (files.length > 0) {
-        dropZone.querySelector('p').textContent = 'Ausgewählte Datei: ' + files[0].name;
+    dropZone.querySelector('p').textContent = '{{ _("Ausgewählte Datei:") }} ' + files[0].name;
       } else {
-        dropZone.querySelector('p').textContent = 'Datei hierher ziehen oder klicken, um eine Datei auszuwählen.';
+    dropZone.querySelector('p').textContent = '{{ _("Datei hierher ziehen oder klicken, um eine Datei auszuwählen.") }}';
       }
     }
   </script> 
