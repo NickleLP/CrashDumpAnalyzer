@@ -5,6 +5,7 @@ import markdown
 import re
 from datetime import datetime
 from config import VERSION
+import sys
 
 
 app = Flask(__name__)
@@ -19,6 +20,17 @@ os.makedirs(app.config['ANALYSIS_FOLDER'], exist_ok=True)
 # Globale Variablen für Tickets
 ticket_number = 1
 tickets = {}
+
+def find_cdb_executable():
+    possible_paths = [
+        r'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe',
+        r'C:\Program Files\Windows Kits\10\Debuggers\x64\cdb.exe',
+        # Weitere mögliche Pfade hinzufügen
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+    return None
 
 def get_exception_description(code):
     exception_codes = {
@@ -43,7 +55,11 @@ def get_exception_description(code):
     return exception_codes.get(code, 'Unbekannter Fehler')
 
 def analyze_dump(dump_file_path, ticket_number):
-    debugger_path = r'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe'  # Pfad anpassen
+    debugger_path = find_cdb_executable()
+    if debugger_path is None:
+        flash('cdb.exe wurde nicht gefunden. Bitte installieren Sie die Windows Debugging Tools.')
+        return "Debugger nicht gefunden", "Bitte installieren Sie die Windows Debugging Tools."
+
     command = f'"{debugger_path}" -z "{dump_file_path}" -c "!analyze -v; q"'
 
     try:
@@ -137,8 +153,22 @@ def upload_file():
 
 @app.route('/changelog')
 def changelog():
-    with open('changelog.md', 'r', encoding='utf-8') as f:
+    # Bestimmen des Basisverzeichnisses
+    if getattr(sys, 'frozen', False):
+        # Anwendung ist als ausführbare Datei gebündelt
+        application_path = sys._MEIPASS
+    else:
+        # Anwendung wird normal ausgeführt
+        application_path = os.path.dirname(os.path.abspath(__file__))
+
+    changelog_path = os.path.join(application_path, 'changelog.md')
+
+    if not os.path.exists(changelog_path):
+        return "Changelog-Datei nicht gefunden.", 404
+
+    with open(changelog_path, 'r', encoding='utf-8') as f:
         content = f.read()
+
     # Konvertieren von Markdown zu HTML
     changelog_html = markdown.markdown(content)
     return render_template('changelog.html', changelog=changelog_html, version=VERSION)
@@ -157,4 +187,4 @@ def view_analysis(ticket_number):
         return redirect(url_for('upload_file'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
