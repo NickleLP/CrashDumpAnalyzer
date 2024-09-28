@@ -176,7 +176,11 @@ def changelog():
 @app.route('/analysis/<int:ticket_number>')
 def view_analysis(ticket_number):
     analysis_filename = f"analysis_{ticket_number}.txt"
-    analysis_path = os.path.join(app.config['ANALYSIS_FOLDER'], analysis_filename)
+    analysis_path = os.path.normpath(os.path.join(app.config['ANALYSIS_FOLDER'], analysis_filename))
+
+    if not analysis_path.startswith(app.config['ANALYSIS_FOLDER']):
+        flash('Ungültiger Pfad.')
+        return redirect(url_for('upload_file'))
 
     if os.path.exists(analysis_path):
         with open(analysis_path, 'r', encoding='utf-8') as f:
