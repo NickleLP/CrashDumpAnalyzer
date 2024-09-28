@@ -153,8 +153,22 @@ def upload_file():
 
 @app.route('/changelog')
 def changelog():
-    with open('changelog.md', 'r', encoding='utf-8') as f:
+    # Bestimmen des Basisverzeichnisses
+    if getattr(sys, 'frozen', False):
+        # Anwendung ist als ausführbare Datei gebündelt
+        application_path = sys._MEIPASS
+    else:
+        # Anwendung wird normal ausgeführt
+        application_path = os.path.dirname(os.path.abspath(__file__))
+
+    changelog_path = os.path.join(application_path, 'changelog.md')
+
+    if not os.path.exists(changelog_path):
+        return "Changelog-Datei nicht gefunden.", 404
+
+    with open(changelog_path, 'r', encoding='utf-8') as f:
         content = f.read()
+
     # Konvertieren von Markdown zu HTML
     changelog_html = markdown.markdown(content)
     return render_template('changelog.html', changelog=changelog_html, version=VERSION)
