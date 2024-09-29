@@ -12,7 +12,11 @@ a = Analysis(['app.py'],
                  ('translations', 'translations'),
                  ('changelog.md', '.')
              ],
-             hiddenimports=['jinja2.ext.i18n', 'babel.numbers'],
+             hiddenimports=[
+                 'flask_babel',
+                 'jinja2.ext.i18n',
+                 'babel.numbers'
+             ],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
