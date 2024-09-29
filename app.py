@@ -5,6 +5,9 @@ import markdown
 import re
 from datetime import datetime
 from flask_babel import Babel, gettext as _
+import flask_babel.speaklater
+import babel.dates
+import babel.support
 from config import VERSION
 import sys
 
