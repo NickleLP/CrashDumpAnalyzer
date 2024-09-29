@@ -1,0 +1,125 @@
+# English translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-29 12:05+0200\n"
+"PO-Revision-Date: 2024-09-29 12:08+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: app.py:72
+msgid "Unknown error"
+msgstr "Unknown error"
+
+#: app.py:77
+msgid "cdb.exe could not be found. Please install the Windows debugging tools."
+msgstr "cdb.exe could not be found. Please install the Windows debugging tools."
+
+#: app.py:78
+msgid "Debugger not found"
+msgstr "Debugger not found"
+
+#: app.py:123
+msgid "Analysis canceled"
+msgstr "Analysis canceled"
+
+#: app.py:124
+msgid "The debugger did not respond within the expected time."
+msgstr "The debugger did not respond within the expected time."
+
+#: app.py:126
+msgid "Errors in the analysis"
+msgstr "Errors in the analysis"
+
+#: app.py:140 app.py:144
+msgid "No file selected"
+msgstr "No file selected"
+
+#: app.py:163
+msgid "File uploaded and analyzed. Ticket number:"
+msgstr "File uploaded and analyzed. Ticket number:"
+
+#: app.py:168
+msgid "Please upload a valid .dmp file"
+msgstr "Please upload a valid .dmp file"
+
+#: app.py:186
+msgid "Changelog file not found."
+msgstr "Changelog file not found."
+
+#: app.py:210
+msgid "Analysis report not found."
+msgstr "Analysis report not found."
+
+#: templates/analysis.html:9
+#, python-format
+msgid "Analysis report for ticket %(ticket_number)s from %(ticket_timestamp)s"
+msgstr "Analysis report for ticket %(ticket_number)s from %(ticket_timestamp)s"
+
+#: templates/analysis.html:16
+msgid "Back to overview"
+msgstr "Back to overview"
+
+#: templates/changelog.html:15
+msgid "Back to the main page"
+msgstr "Back to the main page"
+
+#: templates/index.html:5 templates/index.html:14
+msgid "CrashDumpAnalyzer"
+msgstr "CrashDumpAnalyzer"
+
+#: templates/index.html:10
+msgid "Deutsch"
+msgstr "German"
+
+#: templates/index.html:11
+msgid "English"
+msgstr "English"
+
+#: templates/index.html:28 templates/index.html:58
+msgid "Drag file here or click to select a file."
+msgstr "Drag file here or click to select a file."
+
+#: templates/index.html:32
+msgid "Upload & Analyze"
+msgstr "Upload & Analyze"
+
+#: templates/index.html:36
+msgid "Tickets"
+msgstr "Tickets"
+
+#: templates/index.html:41
+msgid "Ticket"
+msgstr "Ticket"
+
+#: templates/index.html:44
+msgid "Reason for the crash:"
+msgstr "Reason for the crash:"
+
+#: templates/index.html:45
+msgid "View analysis report"
+msgstr "View analysis report"
+
+#: templates/index.html:49
+msgid "No tickets available yet."
+msgstr "No tickets available yet."
+
+#: templates/index.html:53
+msgid "Version"
+msgstr "Version"
+
+#: templates/index.html:57
+msgid "Selected file:"
+msgstr "Selected file:"
+

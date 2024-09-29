@@ -1,19 +1,22 @@
 <!doctype html>
-<html lang="de">
+<html lang="{{ get_locale() }}">
 <head>
-  <meta charset="UTF-8">
-  <title>Analysebericht für Ticket {{ ticket_number }}</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>Analysebericht für Ticket {{ ticket_number }}</h1>
+    <h1>
+        {% trans trimmed ticket_number=ticket_number, ticket_timestamp=ticket_timestamp %}
+        Analysis report for ticket {{ ticket_number }} from {{ ticket_timestamp }}
+        {% endtrans %}
+    </h1>
+    
+    <pre>{{ analysis_content }}</pre>
+    
+    <p><a href="{{ url_for('upload_file') }}">{{ _('Back to overview') }}</a></p> 
 
-  <pre>{{ analysis_content }}</pre>
-
-  <p><a href="{{ url_for('upload_file') }}">Zurück zur Übersicht</a></p>
-
-  <footer>
-    &copy; 2024 CrashDumpAnalyzer by NickleLP
-  </footer>
+    <footer>
+        &copy; 2024 CrashDumpAnalyzer by NickleLP
+    </footer>
 </body>
 </html>

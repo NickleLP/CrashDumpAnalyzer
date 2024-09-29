@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.0.2 - 28.09.2024
+
+- New language: English can now be used as a language
+- Bugfixes
+
+
 ## Version 1.0.1 - 28.09.2024
 
 - Bugfix if a capitalized .DMP file was uploaded, it was displayed as invalid. This has been fixed
