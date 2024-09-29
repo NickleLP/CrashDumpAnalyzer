@@ -20,7 +20,7 @@ app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
 def get_locale():
     # Überprüfen, ob eine Sprache in der Session gespeichert ist
     lang = session.get('lang', 'en')
-    print(f"Aktuelle Sprache: {lang}")
+    #print(f"Aktuelle Sprache: {lang}")
     return lang
 
 babel = Babel(app, locale_selector=get_locale)
@@ -167,7 +167,7 @@ def upload_file():
         else:
             flash (_('Please upload a valid .dmp file'))
             return redirect(request.url)
-    print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
+    #print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
     return render_template('index.html', tickets=tickets, version=VERSION, get_locale=get_locale)
 
 @app.route('/changelog')
