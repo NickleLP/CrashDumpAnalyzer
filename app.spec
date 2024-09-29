@@ -17,7 +17,7 @@ a = Analysis(['app.py'],
                  'jinja2.ext.i18n',
                  'babel.numbers'
              ],
-             hookspath=[],
+             hookspath=['./hooks'], 
              runtime_hooks=[],
              excludes=[],
              win_no_prefer_redirects=False,
