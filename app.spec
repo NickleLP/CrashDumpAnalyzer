@@ -6,10 +6,13 @@ block_cipher = None
 a = Analysis(['app.py'],
              pathex=[],
              binaries=[],
-             datas=[('templates', 'templates'),
-                    ('static', 'static'),
-                    ('changelog.md', '.')],  # Fügen Sie diese Zeile hinzu
-             hiddenimports=['jinja2.ext'],
+             datas=[
+                 ('templates', 'templates'),
+                 ('static', 'static'),
+                 ('translations', 'translations'),
+                 ('changelog.md', '.')
+             ],
+             hiddenimports=['jinja2.ext.i18n', 'babel.numbers'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
