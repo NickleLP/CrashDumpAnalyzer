@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-29 12:05+0200\n"
+"POT-Creation-Date: 2024-09-29 12:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Back to the main page"
 msgstr ""
 
-#: templates/index.html:5 templates/index.html:14
+#: templates/index.html:5 templates/index.html:15
 msgid "CrashDumpAnalyzer"
 msgstr ""
 
@@ -86,39 +86,43 @@ msgstr ""
 msgid "English"
 msgstr ""
 
-#: templates/index.html:28 templates/index.html:58
+#: templates/index.html:12
+msgid "Dutch"
+msgstr ""
+
+#: templates/index.html:29 templates/index.html:59
 msgid "Drag file here or click to select a file."
 msgstr ""
 
-#: templates/index.html:32
+#: templates/index.html:33
 msgid "Upload & Analyze"
 msgstr ""
 
-#: templates/index.html:36
+#: templates/index.html:37
 msgid "Tickets"
 msgstr ""
 
-#: templates/index.html:41
+#: templates/index.html:42
 msgid "Ticket"
 msgstr ""
 
-#: templates/index.html:44
+#: templates/index.html:45
 msgid "Reason for the crash:"
 msgstr ""
 
-#: templates/index.html:45
+#: templates/index.html:46
 msgid "View analysis report"
 msgstr ""
 
-#: templates/index.html:49
+#: templates/index.html:50
 msgid "No tickets available yet."
 msgstr ""
 
-#: templates/index.html:53
+#: templates/index.html:54
 msgid "Version"
 msgstr ""
 
-#: templates/index.html:57
+#: templates/index.html:58
 msgid "Selected file:"
 msgstr ""
 
