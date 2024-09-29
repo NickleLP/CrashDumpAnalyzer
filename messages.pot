@@ -1,0 +1,128 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-29 12:35+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: app.py:72
+msgid "Unknown error"
+msgstr ""
+
+#: app.py:77
+msgid "cdb.exe could not be found. Please install the Windows debugging tools."
+msgstr ""
+
+#: app.py:78
+msgid "Debugger not found"
+msgstr ""
+
+#: app.py:123
+msgid "Analysis canceled"
+msgstr ""
+
+#: app.py:124
+msgid "The debugger did not respond within the expected time."
+msgstr ""
+
+#: app.py:126
+msgid "Errors in the analysis"
+msgstr ""
+
+#: app.py:140 app.py:144
+msgid "No file selected"
+msgstr ""
+
+#: app.py:163
+msgid "File uploaded and analyzed. Ticket number:"
+msgstr ""
+
+#: app.py:168
+msgid "Please upload a valid .dmp file"
+msgstr ""
+
+#: app.py:186
+msgid "Changelog file not found."
+msgstr ""
+
+#: app.py:210
+msgid "Analysis report not found."
+msgstr ""
+
+#: templates/analysis.html:9
+#, python-format
+msgid "Analysis report for ticket %(ticket_number)s from %(ticket_timestamp)s"
+msgstr ""
+
+#: templates/analysis.html:16
+msgid "Back to overview"
+msgstr ""
+
+#: templates/changelog.html:15
+msgid "Back to the main page"
+msgstr ""
+
+#: templates/index.html:5 templates/index.html:15
+msgid "CrashDumpAnalyzer"
+msgstr ""
+
+#: templates/index.html:10
+msgid "Deutsch"
+msgstr ""
+
+#: templates/index.html:11
+msgid "English"
+msgstr ""
+
+#: templates/index.html:12
+msgid "Dutch"
+msgstr ""
+
+#: templates/index.html:29 templates/index.html:59
+msgid "Drag file here or click to select a file."
+msgstr ""
+
+#: templates/index.html:33
+msgid "Upload & Analyze"
+msgstr ""
+
+#: templates/index.html:37
+msgid "Tickets"
+msgstr ""
+
+#: templates/index.html:42
+msgid "Ticket"
+msgstr ""
+
+#: templates/index.html:45
+msgid "Reason for the crash:"
+msgstr ""
+
+#: templates/index.html:46
+msgid "View analysis report"
+msgstr ""
+
+#: templates/index.html:50
+msgid "No tickets available yet."
+msgstr ""
+
+#: templates/index.html:54
+msgid "Version"
+msgstr ""
+
+#: templates/index.html:58
+msgid "Selected file:"
+msgstr ""
+

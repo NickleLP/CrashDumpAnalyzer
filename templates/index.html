@@ -1,62 +1,72 @@
 <!doctype html>
 <html lang="{{ get_locale() }}">
 <head>
-  <meta charset="UTF-8">
-  <title>{{ _('CrashDumpAnalyzer') }}</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>{{ _('CrashDumpAnalyzer') }}</title> 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <!-- Sprachauswahl -->
-  <div class="language-selector">
-    <a href="{{ url_for('set_language', language='de') }}">Deutsch</a> |
-    <a href="{{ url_for('set_language', language='en') }}">English</a>
-  </div>
-
-  <h1>{{ _('CrashDumpAnalyzer') }}</h1>
-
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div class="message">
-        {% for message in messages %}
-          <p>{{ message }}</p>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
-
-  <form method="post" enctype="multipart/form-data" class="upload-form">
-    <div id="drop-zone">
-      <p>Datei hierher ziehen oder klicken, um eine Datei auszuwählen.</p>
-      <input id="file-upload" type="file" name="file" accept=".dmp">
+    <div class="language-selector">
+        <a href="{{ url_for('set_language', language='de') }}">{{ _('Deutsch') }}</a> |
+        <a href="{{ url_for('set_language', language='en') }}">{{ _('English') }}</a> |
+        <a href="{{ url_for('set_language', language='nl') }}">{{ _('Dutch') }}</a>
     </div>
-    <div class="form-group">
-      <input type="submit" value="Hochladen & Analysieren" class="btn-upload">
-    </div>
-  </form>
-  
 
-  <h2>Tickets</h2>
-  {% if tickets %}
-    {% for ticket_num, ticket_info in tickets.items() %}
-      <div class="ticket">
-        <div class="ticket-header">
-          <p class="ticket-title">Ticket {{ ticket_num }}: {{ ticket_info.exe_name }}</p>
-          <span class="ticket-timestamp">{{ ticket_info.timestamp }}</span>
+    <h1>{{ _('CrashDumpAnalyzer') }}</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    <p>{{ message }}</p> 
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="post" enctype="multipart/form-data" class="upload-form">
+        <div id="drop-zone">
+            <p>{{ _('Drag file here or click to select a file.') }}</p> 
+            <input id="file-upload" type="file" name="file" accept=".dmp">
         </div>
-        <p><strong>Grund des Absturzes:</strong> {{ ticket_info.crash_reason }}</p>
-        <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">Analysebericht ansehen</a></p>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p>{{ _('Noch keine Tickets vorhanden.') }}</p>
-  {% endif %}
+        <div class="form-group">
+            <input type="submit" value="{{ _('Upload & Analyze') }}" class="btn-upload"> 
+        </div>
+    </form>
 
-  <footer>
-    <p>&copy; 2024 CrashDumpAnalyzer by NickleLP | {{ _('Version') }} <a href="{{ url_for('changelog') }}">{{ version }}</a></p>
-  </footer>
+    <h2>{{ _('Tickets') }}</h2> 
+    {% if tickets %}
+        {% for ticket_num, ticket_info in tickets.items() %}
+            <div class="ticket">
+                <div class="ticket-header">
+                    <p class="ticket-title">{{ _('Ticket') }} {{ ticket_num }}: {{ ticket_info.exe_name }}</p>
+                    <span class="ticket-timestamp">{{ ticket_info.timestamp }}</span>
+                </div>
+                <p><strong>{{ _('Reason for the crash:') }}</strong> {{ ticket_info.crash_reason }}</p>
+                <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">{{ _('View analysis report') }}</a></p> 
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>{{ _('No tickets available yet.') }}</p>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2024 CrashDumpAnalyzer by NickleLP | {{ _('Version') }} <a href="{{ url_for('changelog') }}">{{ version }}</a></p>
+    </footer>
+
+    <div id="js-translations" style="display: none;">
+      <span id="selected-file">{{ _('Selected file:') }}</span>
+      <span id="drop-file">{{ _('Drag file here or click to select a file.') }}</span>
+    </div>
+    
+
   <script>
     const fileUpload = document.getElementById('file-upload');
     const dropZone = document.getElementById('drop-zone');
+    const translations = document.getElementById('js-translations');
+    const selectedFileText = translations.querySelector('#selected-file').textContent;
+    const dropFileText = translations.querySelector('#drop-file').textContent;
+
   
     // Öffnet den Datei-Explorer, wenn auf die Drop-Zone geklickt wird
     dropZone.addEventListener('click', () => {
@@ -108,13 +118,13 @@
     fileUpload.addEventListener('change', updateFileName);
   
     function updateFileName() {
-      const files = fileUpload.files;
-      if (files.length > 0) {
-        dropZone.querySelector('p').textContent = 'Ausgewählte Datei: ' + files[0].name;
-      } else {
-        dropZone.querySelector('p').textContent = 'Datei hierher ziehen oder klicken, um eine Datei auszuwählen.';
+        const files = fileUpload.files;
+        if (files.length > 0) {
+          dropZone.querySelector('p').textContent = selectedFileText + ' ' + files[0].name; 
+        } else {
+          dropZone.querySelector('p').textContent = dropFileText; 
+        }
       }
-    }
   </script> 
 </body>
 </html>

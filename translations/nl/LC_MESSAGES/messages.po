@@ -1,0 +1,129 @@
+# Dutch translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-09-29 12:35+0200\n"
+"PO-Revision-Date: 2024-09-29 12:35+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: nl\n"
+"Language-Team: nl <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: app.py:72
+msgid "Unknown error"
+msgstr "Onbekende fout"
+
+#: app.py:77
+msgid "cdb.exe could not be found. Please install the Windows debugging tools."
+msgstr "cdb.exe kon niet worden gevonden. Installeer de debugging tools van Windows."
+
+#: app.py:78
+msgid "Debugger not found"
+msgstr "Debugger niet gevonden"
+
+#: app.py:123
+msgid "Analysis canceled"
+msgstr "Analyse geannuleerd"
+
+#: app.py:124
+msgid "The debugger did not respond within the expected time."
+msgstr "De debugger reageerde niet binnen de verwachte tijd."
+
+#: app.py:126
+msgid "Errors in the analysis"
+msgstr "Fouten in de analyse"
+
+#: app.py:140 app.py:144
+msgid "No file selected"
+msgstr "Geen bestand geselecteerd"
+
+#: app.py:163
+msgid "File uploaded and analyzed. Ticket number:"
+msgstr "Bestand geüpload en geanalyseerd. Ticketnummer:"
+
+#: app.py:168
+msgid "Please upload a valid .dmp file"
+msgstr "Upload een geldig .dmp-bestand"
+
+#: app.py:186
+msgid "Changelog file not found."
+msgstr "Changelog-bestand niet gevonden."
+
+#: app.py:210
+msgid "Analysis report not found."
+msgstr "Analyseverslag niet gevonden."
+
+#: templates/analysis.html:9
+#, python-format
+msgid "Analysis report for ticket %(ticket_number)s from %(ticket_timestamp)s"
+msgstr "Analyseverslag voor ticket %(ticket_number)s van %(ticket_timestamp)s"
+
+#: templates/analysis.html:16
+msgid "Back to overview"
+msgstr "Terug naar overzicht"
+
+#: templates/changelog.html:15
+msgid "Back to the main page"
+msgstr "Terug naar de hoofdpagina"
+
+#: templates/index.html:5 templates/index.html:15
+msgid "CrashDumpAnalyzer"
+msgstr "CrashDumpAnalyzer"
+
+#: templates/index.html:10
+msgid "Deutsch"
+msgstr "Duits"
+
+#: templates/index.html:11
+msgid "English"
+msgstr "Engels"
+
+#: templates/index.html:12
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: templates/index.html:29 templates/index.html:59
+msgid "Drag file here or click to select a file."
+msgstr "Sleep een bestand hierheen of klik om een bestand te selecteren."
+
+#: templates/index.html:33
+msgid "Upload & Analyze"
+msgstr "Uploaden en analyseren"
+
+#: templates/index.html:37
+msgid "Tickets"
+msgstr "Tickets"
+
+#: templates/index.html:42
+msgid "Ticket"
+msgstr "Ticket"
+
+#: templates/index.html:45
+msgid "Reason for the crash:"
+msgstr "Reden voor de crash:"
+
+#: templates/index.html:46
+msgid "View analysis report"
+msgstr "Analyseverslag bekijken"
+
+#: templates/index.html:50
+msgid "No tickets available yet."
+msgstr "Er zijn nog geen tickets beschikbaar."
+
+#: templates/index.html:54
+msgid "Version"
+msgstr "Versie"
+
+#: templates/index.html:58
+msgid "Selected file:"
+msgstr "Geselecteerd bestand:"
+
