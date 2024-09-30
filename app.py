@@ -10,7 +10,7 @@ import sys
 
 
 app = Flask(__name__)
-app.secret_key = 'IhrGeheimerSchlüssel'  # Bitte ändern Sie dies zu einem sicheren Wert
+app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
