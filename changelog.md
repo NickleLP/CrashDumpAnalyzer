@@ -2,6 +2,7 @@
 ## Version 1.0.3 - 29.09.2024
 
 - New language: Dutch can now be used as a language
+- Bug fixes: requirements.txt updated
 
 ## Version 1.0.2 - 28.09.2024
 
