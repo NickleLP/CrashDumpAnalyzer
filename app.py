@@ -5,15 +5,12 @@ import markdown
 import re
 from datetime import datetime
 from flask_babel import Babel, gettext as _
-import flask_babel.speaklater
-import babel.dates
-import babel.support
 from config import VERSION
 import sys
 
 
 app = Flask(__name__)
-app.secret_key = 'IhrGeheimerSchlüssel'  # Bitte ändern Sie dies zu einem sicheren Wert
+app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
