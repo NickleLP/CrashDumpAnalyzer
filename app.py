@@ -24,8 +24,8 @@ VALID_REDIRECTS = [
 
 def validate_url(url):
     parsed_url = urlparse(url.replace('\\', ''))
-    if parsed_url.path in VALID_REDIRECTS:
-        return url
+    if parsed_url.path in VALID_REDIRECTS and not parsed_url.query and not parsed_url.fragment:
+        return parsed_url.path
     return '/'
 
 def get_locale():
