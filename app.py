@@ -7,7 +7,13 @@ from datetime import datetime
 from flask_babel import Babel, gettext as _
 from config import VERSION
 import sys
+from urllib.parse import urlparse
 
+app = Flask(__name__)
+    parsed_url = urlparse(url.replace('\\', ''))
+    if not parsed_url.netloc and not parsed_url.scheme:
+        return url
+    return '/'
 
 app = Flask(__name__)
 app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
@@ -138,11 +144,11 @@ def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash (_('No file selected')) 
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         file = request.files['file']
         if file.filename == '':
             flash (_('No file selected'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         if file and file.filename.lower().endswith('.dmp'):
             # Speichern der Datei
             dump_filename = f"dump_{ticket_number}.dmp"
@@ -166,7 +172,7 @@ def upload_file():
             return redirect(url_for('upload_file'))
         else:
             flash (_('Please upload a valid .dmp file'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
     #print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
     return render_template('index.html', tickets=tickets, version=VERSION, get_locale=get_locale)
 
