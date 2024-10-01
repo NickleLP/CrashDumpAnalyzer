@@ -10,18 +10,18 @@ import sys
 from urllib.parse import urlparse
 
 app = Flask(__name__)
-    parsed_url = urlparse(url.replace('\\', ''))
-    if not parsed_url.netloc and not parsed_url.scheme:
-        return url
-    return '/'
-
-app = Flask(__name__)
-app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
+app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*443*146*4431*464*31464i4315p453145oi6443165464531'
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
+
+def validate_url(url):
+    parsed_url = urlparse(url.replace('\\', ''))
+    if not parsed_url.netloc and not parsed_url.scheme:
+        return url
+    return '/'
 
 def get_locale():
     # Überprüfen, ob eine Sprache in der Session gespeichert ist
