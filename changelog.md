@@ -1,3 +1,8 @@
+## Version 1.0.4 - 01.10.2024
+
+- Security improvement: to the file path handling in the view_analysis function in app.py.
+  It ensures that the file path is normalized and checked to prevent directory traversal attacks.
+
 ## Version 1.0.3 - 30.09.2024
 
 - New language: Dutch can now be used as a language
