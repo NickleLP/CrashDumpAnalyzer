@@ -16,10 +16,15 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
+VALID_REDIRECTS = [
+    '/', 
+    '/changelog', 
+    '/analysis'
+]
 
 def validate_url(url):
     parsed_url = urlparse(url.replace('\\', ''))
-    if not parsed_url.netloc and not parsed_url.scheme:
+    if parsed_url.path in VALID_REDIRECTS:
         return url
     return '/'
 
