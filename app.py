@@ -7,15 +7,26 @@ from datetime import datetime
 from flask_babel import Babel, gettext as _
 from config import VERSION
 import sys
-
+from urllib.parse import urlparse
 
 app = Flask(__name__)
-app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
+app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*443*146*4431*464*31464i4315p453145oi6443165464531'
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
+VALID_REDIRECTS = [
+    '/', 
+    '/changelog', 
+    '/analysis'
+]
+
+def validate_url(url):
+    parsed_url = urlparse(url.replace('\\', ''))
+    if parsed_url.path in VALID_REDIRECTS and not parsed_url.query and not parsed_url.fragment:
+        return parsed_url.path
+    return '/'
 
 def get_locale():
     # Überprüfen, ob eine Sprache in der Session gespeichert ist
@@ -138,11 +149,11 @@ def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash (_('No file selected')) 
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         file = request.files['file']
         if file.filename == '':
             flash (_('No file selected'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         if file and file.filename.lower().endswith('.dmp'):
             # Speichern der Datei
             dump_filename = f"dump_{ticket_number}.dmp"
@@ -166,7 +177,7 @@ def upload_file():
             return redirect(url_for('upload_file'))
         else:
             flash (_('Please upload a valid .dmp file'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
     #print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
     return render_template('index.html', tickets=tickets, version=VERSION, get_locale=get_locale)
 
