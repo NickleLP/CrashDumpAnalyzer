@@ -1,3 +1,8 @@
+## Version 1.0.5 - 02.09.2024
+
+- Security Fix: URL redirection from remote source
+
+
 ## Version 1.0.4 - 01.10.2024
 
 - Security Fix: to the file path handling in the view_analysis function in app.py.
