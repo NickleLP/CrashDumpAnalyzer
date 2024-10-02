@@ -7,15 +7,31 @@ from datetime import datetime
 from flask_babel import Babel, gettext as _
 from config import VERSION
 import sys
-
+from urllib.parse import urlparse
 
 app = Flask(__name__)
-app.secret_key = 'SecrectKey1234'  # Dies zu einem sicheren Wert ändern
+app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*443*146*4431*464*31464i4315p453145oi6443165464531'
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
+VALID_REDIRECTS = [
+    '/', 
+    '/changelog', 
+    '/analysis'
+]
+
+def validate_url(url):
+    parsed_url = urlparse(url.replace('\\', ''))
+    if parsed_url.path in VALID_REDIRECTS and not parsed_url.query and not parsed_url.fragment:
+        return parsed_url.path
+    return '/'
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(target)
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 def get_locale():
     # Überprüfen, ob eine Sprache in der Session gespeichert ist
@@ -28,7 +44,10 @@ babel = Babel(app, locale_selector=get_locale)
 @app.route('/set_language/<language>')
 def set_language(language):
     session['lang'] = language
-    return redirect(request.referrer or url_for('upload_file'))
+    referrer = request.referrer
+    if not referrer or not is_safe_url(referrer):
+        referrer = url_for('upload_file')
+    return redirect(referrer)
 
 # Erstellen der Verzeichnisse, falls sie nicht existieren
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -138,11 +157,11 @@ def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash (_('No file selected')) 
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         file = request.files['file']
         if file.filename == '':
             flash (_('No file selected'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
         if file and file.filename.lower().endswith('.dmp'):
             # Speichern der Datei
             dump_filename = f"dump_{ticket_number}.dmp"
@@ -166,7 +185,7 @@ def upload_file():
             return redirect(url_for('upload_file'))
         else:
             flash (_('Please upload a valid .dmp file'))
-            return redirect(request.url)
+            return redirect(validate_url(request.url))
     #print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
     return render_template('index.html', tickets=tickets, version=VERSION, get_locale=get_locale)
 
@@ -195,7 +214,12 @@ def changelog():
 @app.route('/analysis/<int:ticket_number>')
 def view_analysis(ticket_number):
     analysis_filename = f"analysis_{ticket_number}.txt"
-    analysis_path = os.path.join(app.config['ANALYSIS_FOLDER'], analysis_filename)
+    base_path = app.config['ANALYSIS_FOLDER']
+    analysis_path = os.path.normpath(os.path.join(base_path, analysis_filename))
+
+    if not analysis_path.startswith(base_path):
+        flash(_('Invalid file path.'))
+        return redirect(url_for('upload_file'))
 
     if os.path.exists(analysis_path):
         with open(analysis_path, 'r', encoding='utf-8') as f:
