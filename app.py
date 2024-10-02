@@ -28,6 +28,11 @@ def validate_url(url):
         return parsed_url.path
     return '/'
 
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(target)
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
 def get_locale():
     # Überprüfen, ob eine Sprache in der Session gespeichert ist
     lang = session.get('lang', 'en')
@@ -39,7 +44,10 @@ babel = Babel(app, locale_selector=get_locale)
 @app.route('/set_language/<language>')
 def set_language(language):
     session['lang'] = language
-    return redirect(request.referrer or url_for('upload_file'))
+    referrer = request.referrer
+    if not referrer or not is_safe_url(referrer):
+        referrer = url_for('upload_file')
+    return redirect(referrer)
 
 # Erstellen der Verzeichnisse, falls sie nicht existieren
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
