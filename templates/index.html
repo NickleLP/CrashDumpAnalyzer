@@ -58,6 +58,16 @@
       <span id="selected-file">{{ _('Selected file:') }}</span>
       <span id="drop-file">{{ _('Drag file here or click to select a file.') }}</span>
     </div>
+    <!-- Theme-Umschalter -->
+    <div class="theme-switcher">
+      <label class="switch">
+        <input type="checkbox" onchange="toggleTheme()" id="theme-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+
+
     
 
   <script>
@@ -125,6 +135,21 @@
           dropZone.querySelector('p').textContent = dropFileText; 
         }
       }
-  </script> 
+  </script>
+  <script>
+    // Funktion zum Umschalten des Themes
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    // Theme beim Laden der Seite setzen
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+</script>
 </body>
 </html>

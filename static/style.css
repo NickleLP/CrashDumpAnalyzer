@@ -36,6 +36,92 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
+/* Root-Level Variablen für Light Mode */
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --primary-color: #007BFF;
+    --secondary-color: #6c757d;
+    /* Weitere Variablen nach Bedarf */
+}
+
+/* Variablen für Dark Mode */
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --primary-color: #1e90ff;
+    --secondary-color: #aaaaaa;
+    /* Weitere Variablen nach Bedarf */
+}
+
+/* Anwendung der Variablen */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+a {
+    color: var(--primary-color);
+}
+
+.header, .footer {
+    background-color: var(--secondary-color);
+}
+
+/* Styling für den Theme-Umschalter */
+.theme-switcher {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+/* Schalter-Styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+
 .ticket {
     background-color: #fff;
     border: 1px solid #ccc;
