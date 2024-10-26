@@ -43,6 +43,7 @@ exe = EXE(
     strip=False,
     upx=True,
     console=True,
+    icon='favicon.ico'
 )
 
 coll = COLLECT(
