@@ -1,7 +1,9 @@
-## Version 1.0.6 - 26.10.2024
+## Version 1.1.0 - 27.10.2024
 
 - Feature: New settings icon
 - Featrue: Dark mode
+- Feature: New Exception Codes
+- Feature: Implement the new logo
 
 ## Version 1.0.5 - 02.09.2024
 
