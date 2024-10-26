@@ -36,36 +36,122 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-.ticket {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Root-Level Variablen für Light Mode */
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --primary-color: #007BFF;
+    --secondary-color: #6c757d;
+    --ticket-background-color: #f9f9f9;
+    --ticket-text-color: #000000;
+    /* Weitere Variablen nach Bedarf */
 }
 
-.ticket-title {
-    font-weight: bold;
-    font-size: 1.2em;
-    margin: 0;
-    /* Optional: flex-grow hinzufügen, wenn der Titel den verfügbaren Platz einnehmen soll */
-    /* flex-grow: 1; */
+/* Variablen für Dark Mode */
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --primary-color: #1e90ff;
+    --secondary-color: #aaaaaa;
+    --ticket-background-color: #1e1e1e;
+    --ticket-text-color: #ffffff;
+    /* Weitere Variablen nach Bedarf */
+}
+
+/* Anwendung der Variablen */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+a {
+    color: var(--primary-color);
+}
+
+.header, .footer {
+    background-color: var(--secondary-color);
+}
+
+/* Schalter-Styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+
+.ticket {
+    background-color: var(--ticket-background-color);
+    color: var(--ticket-text-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.ticket a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.ticket a:hover {
+    text-decoration: underline;
 }
 
 .ticket-header {
     display: flex;
-    justify-content: space-between; /* Elemente links und rechts ausrichten */
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+}
+
+.ticket-title {
+    font-weight: bold;
 }
 
 .ticket-timestamp {
     font-size: 0.9em;
-    color: #666;
-    /* Text rechtsbündig ausrichten, falls nötig */
-    text-align: right;
-    /* margin-right entfernen, da es nicht mehr benötigt wird */
+    color: var(--secondary-color);
 }
+
 
 .message {
     color: #000000;
@@ -190,3 +276,85 @@ footer {
 .changelog-content li {
     margin-bottom: 5px;
 }
+
+
+/* Einstellungen-Icon */
+.settings-icon {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--text-color);
+    z-index: 1000;
+}
+
+/* Einstellungen-Menü */
+/* Einstellungen-Menü */
+.settings-menu {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    background-color: var(--background-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+
+    /* Transition-Eigenschaften */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+
+    z-index: 999; /* Höher als das Overlay */
+}
+
+.settings-menu.open {
+    max-height: 500px; /* Groß genug, um den gesamten Inhalt anzuzeigen */
+    opacity: 1;
+}
+
+.settings-menu .language-selector a {
+    display: block;
+    margin: 5px 0;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.settings-menu .language-selector a:hover {
+    text-decoration: underline;
+}
+
+
+.settings-menu .theme-switcher {
+    margin-bottom: 10px;
+}
+
+
+.settings-menu a:hover {
+    text-decoration: underline;
+}
+
+/* Theme-Umschalter Styling */
+.settings-menu .theme-switcher label {
+    display: flex;
+    align-items: center;
+}
+
+.settings-menu .theme-switcher input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Halbtransparentes Schwarz */
+    display: none; /* Initial versteckt */
+    z-index: 998; /* Unterhalb des Menüs, aber über dem Rest */
+}
+

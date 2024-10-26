@@ -4,7 +4,74 @@
   <meta charset="UTF-8">
   <title>Changelog - CrashDumpAnalyzer</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
+<body>
+  <body>
+    <div id="overlay" class="overlay" onclick="toggleSettingsMenu()"></div>
+    <!-- Einstellungen-Icon -->
+    <div class="settings-icon">
+        <i class="fas fa-cog" onclick="toggleSettingsMenu()"></i>
+    </div>
+
+    <!-- Dropdown-Menü -->
+    <div id="settings-menu" class="settings-menu">
+        <!-- Spracheinstellungen -->
+        <div class="language-selector">
+            <p>{{ _('Select language:') }}</p>
+            <p>--------------------------------</p>
+            <a href="{{ url_for('set_language', language='en') }}">{{ _('English') }}</a>
+            <a href="{{ url_for('set_language', language='de') }}">{{ _('Deutsch') }}</a>
+            <a href="{{ url_for('set_language', language='nl') }}">{{ _('Dutch') }}</a>
+            <p>--------------------------------</p>
+        </div>
+        <!-- Theme-Umschalter -->
+        <div class="theme-switcher">
+            <p>{{ _('Select theme:') }}</p>
+            <label>
+                <input type="checkbox" onchange="toggleTheme()" id="theme-toggle">
+                {{ _('Dark Mode') }}
+            </label>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Funktion zum Umschalten des Settings-Menüs
+      function toggleSettingsMenu() {
+        const menu = document.getElementById('settings-menu');
+        menu.classList.toggle('open');
+      }
+  
+      // Funktion zum Umschalten des Themes
+      function toggleTheme() {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          // Schalterzustand aktualisieren
+          document.getElementById('theme-toggle').checked = (newTheme === 'dark');
+      }
+  
+      // Theme beim Laden der Seite setzen
+      (function() {
+          const savedTheme = localStorage.getItem('theme') || 'light';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          // Schalterzustand initialisieren
+          document.getElementById('theme-toggle').checked = (savedTheme === 'dark');
+      })();
+  
+      // Klick außerhalb des Menüs schließen
+      document.addEventListener('click', function(event) {
+          const menu = document.getElementById('settings-menu');
+          const icon = document.querySelector('.settings-icon');
+          if (!menu.contains(event.target) && !icon.contains(event.target)) {
+            menu.classList.remove('open');
+          }
+       });
+  </script>
+</body>
 <body>
   <h1>Changelog</h1>
   
