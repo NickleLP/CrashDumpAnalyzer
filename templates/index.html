@@ -95,19 +95,21 @@
     </form>
 
     <h2>{{ _('Tickets') }}</h2> 
+    <!-- Innerhalb des Body-Tags -->
     {% if tickets %}
-        {% for ticket_num, ticket_info in tickets.items() %}
-            <div class="ticket">
-                <div class="ticket-header">
-                    <p class="ticket-title">{{ _('Ticket') }} {{ ticket_num }}: {{ ticket_info.exe_name }}</p>
-                    <span class="ticket-timestamp">{{ ticket_info.timestamp }}</span>
-                </div>
-                <p><strong>{{ _('Reason for the crash:') }}</strong> {{ ticket_info.crash_reason }}</p>
-                <p><a href="{{ url_for('view_analysis', ticket_number=ticket_num) }}">{{ _('View analysis report') }}</a></p> 
+      {% for ticket in tickets %}
+        <div class="ticket">
+            <div class="ticket-header">
+                <span class="ticket-title">{{ _('Ticket') }} #{{ ticket.id }}</span>
+                <span class="ticket-timestamp">{{ ticket.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
             </div>
-        {% endfor %}
+            <p>{{ _('Anwendungsname') }}: {{ ticket.application_name }}</p>
+            <p>{{ _('Reason for the crash:') }}: {{ ticket.description }}</p>
+            <a href="{{ url_for('view_analysis', ticket_id=ticket.id) }}">{{ _('Analysebericht ansehen') }}</a>
+        </div>
+      {% endfor %}
     {% else %}
-        <p>{{ _('No tickets available yet.') }}</p>
+      <p>{{ _('No tickets available yet.') }}</p>
     {% endif %}
 
     <footer>

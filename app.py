@@ -8,6 +8,9 @@ from flask_babel import Babel, gettext as _
 from config import VERSION
 import sys
 from urllib.parse import urlparse
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*443*146*4431*464*31464i4315p453145oi6443165464531'
@@ -16,11 +19,31 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de', "nl"]
+
+# Konfiguration der Datenbank
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tickets.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
 VALID_REDIRECTS = [
     '/', 
     '/changelog', 
     '/analysis'
 ]
+
+class Ticket(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    exception_code = db.Column(db.String(20), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    application_name = db.Column(db.String(100), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    analysis = db.relationship('Analysis', backref='ticket', uselist=False)
+
+class Analysis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
 
 def validate_url(url):
     parsed_url = urlparse(url.replace('\\', ''))
@@ -56,6 +79,12 @@ os.makedirs(app.config['ANALYSIS_FOLDER'], exist_ok=True)
 # Globale Variablen für Tickets
 ticket_number = 1
 tickets = {}
+
+# Erlaubte Dateierweiterungen
+ALLOWED_EXTENSIONS = {'dmp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def find_cdb_executable():
     possible_paths = [
@@ -153,41 +182,51 @@ def inject_get_locale():
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    global ticket_number
     if request.method == 'POST':
-        if 'file' not in request.files:
-            flash (_('No file selected')) 
-            return redirect(validate_url(request.url))
-        file = request.files['file']
+        if 'dump_file' not in request.files:
+            flash(_('Keine Datei ausgewählt'))
+            return redirect(request.url)
+        file = request.files['dump_file']
         if file.filename == '':
-            flash (_('No file selected'))
-            return redirect(validate_url(request.url))
-        if file and file.filename.lower().endswith('.dmp'):
-            # Speichern der Datei
-            dump_filename = f"dump_{ticket_number}.dmp"
-            dump_path = os.path.join(app.config['UPLOAD_FOLDER'], dump_filename)
-            file.save(dump_path)
+            flash(_('Keine Datei ausgewählt'))
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            timestamp = datetime.utcnow()
+            unique_filename = f"{timestamp.strftime('%Y%m%d%H%M%S')}_{filename}"
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+            file.save(file_path)
 
-            # Analysieren der Dump-Datei (Ticketnummer übergeben)
-            exe_name, crash_reason = analyze_dump(dump_path, ticket_number)
+            # Führen Sie die Analyse durch (Ihre bestehende Analysefunktion)
+            analysis_content, exception_code, description, application_name = analyze_dump(file_path)
 
-            # Speichern des Tickets
-            tickets[ticket_number] = {
-            'exe_name': exe_name,
-            'crash_reason': crash_reason,
-            'analysis_file': f"analysis_{ticket_number}.txt",
-            'timestamp': datetime.now().strftime('%d.%m.%Y %H:%M:%S')
-            }
+            # Speichern Sie das Ticket und die Analyse in der Datenbank
+            ticket = Ticket(
+                exception_code=exception_code,
+                description=description,
+                application_name=application_name,
+                timestamp=timestamp
+            )
+            db.session.add(ticket)
+            db.session.commit()
 
-            flash (_('File uploaded and analyzed. Ticket number:') + f' {ticket_number}') 
-            ticket_number += 1
+            analysis = Analysis(
+                ticket_id=ticket.id,
+                content=analysis_content
+            )
+            db.session.add(analysis)
+            db.session.commit()
 
+            flash(_('Datei hochgeladen und analysiert. Ticketnummer: ') + str(ticket.id))
             return redirect(url_for('upload_file'))
         else:
-            flash (_('Please upload a valid .dmp file'))
-            return redirect(validate_url(request.url))
-    #print(f"Aktuelle Sprache in der Ansicht: {get_locale()}") 
-    return render_template('index.html', tickets=tickets, version=VERSION, get_locale=get_locale)
+            flash(_('Bitte eine gültige .dmp-Datei hochladen'))
+            return redirect(request.url)
+    else:
+        # Laden Sie die Tickets aus der Datenbank
+        tickets = Ticket.query.order_by(Ticket.timestamp.desc()).all()
+        return render_template('index.html', tickets=tickets)
+
 
 @app.route('/changelog')
 def changelog():
@@ -211,28 +250,13 @@ def changelog():
     changelog_html = markdown.markdown(content)
     return render_template('changelog.html', changelog=changelog_html, version=VERSION)
 
-@app.route('/analysis/<int:ticket_number>')
-def view_analysis(ticket_number):
-    analysis_filename = f"analysis_{ticket_number}.txt"
-    base_path = app.config['ANALYSIS_FOLDER']
-    analysis_path = os.path.normpath(os.path.join(base_path, analysis_filename))
-
-    if not analysis_path.startswith(base_path):
-        flash(_('Invalid file path.'))
-        return redirect(url_for('upload_file'))
-
-    if os.path.exists(analysis_path):
-        with open(analysis_path, 'r', encoding='utf-8') as f:
-            analysis_content = f.read()
-        ticket_info = tickets.get(ticket_number)
-        ticket_timestamp = ticket_info.get('timestamp') if ticket_info else ''
-        return render_template('analysis.html', 
-                               ticket_number=ticket_number, 
-                               analysis_content=analysis_content,
-                               ticket_timestamp=ticket_timestamp)
-    else:
-        flash (_('Analysis report not found.')) 
-        return redirect(url_for('upload_file'))
+@app.route('/analysis/<int:ticket_id>')
+def view_analysis(ticket_id):
+    ticket = Ticket.query.get_or_404(ticket_id)
+    analysis_content = ticket.analysis.content
+    return render_template('analysis.html',
+                           ticket=ticket,
+                           analysis_content=analysis_content)
 
     
 if __name__ == '__main__':
