@@ -1,7 +1,7 @@
 ## Version 1.1.0 - 27.10.2024
 
 - Feature: New settings icon
-- Featrue: Dark mode
+- Feature: Dark mode
 - Feature: New Exception Codes
 - Feature: Implement the new logo
 
