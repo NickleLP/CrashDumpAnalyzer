@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory, session
+from werkzeug.utils import secure_filename
 import subprocess
 import markdown
 import re
@@ -43,6 +44,14 @@ class Analysis(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
+
+# Version read from file
+with open('version.txt', 'r') as f:
+    version = f.read().strip()
+
+@app.context_processor
+def inject_version():
+    return dict(version=version)
 
 
 def validate_url(url):
@@ -261,3 +270,10 @@ def view_analysis(ticket_id):
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
+@app.cli.command('init-db')
+def init_db_command():
+    """Initialisiert die Datenbank."""
+    db.create_all()
+    print('Die Datenbank wurde erfolgreich initialisiert.')
+
