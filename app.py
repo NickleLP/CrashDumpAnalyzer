@@ -193,11 +193,11 @@ def inject_get_locale():
 def upload_file():
     if request.method == 'POST':
         if 'dump_file' not in request.files:
-            flash(_('Keine Datei ausgewählt'))
+            flash(_('No file selected'))
             return redirect(request.url)
         file = request.files['dump_file']
         if file.filename == '':
-            flash(_('Keine Datei ausgewählt'))
+            flash(_('No file selected'))
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -226,10 +226,10 @@ def upload_file():
             db.session.add(analysis)
             db.session.commit()
 
-            flash(_('Datei hochgeladen und analysiert. Ticketnummer: ') + str(ticket.id))
+            flash(_('File uploaded and analyzed. Ticket number: ') + str(ticket.id))
             return redirect(url_for('upload_file'))
         else:
-            flash(_('Bitte eine gültige .dmp-Datei hochladen'))
+            flash(_('Please upload a valid .dmp file'))
             return redirect(request.url)
     else:
         # Laden Sie die Tickets aus der Datenbank
@@ -273,7 +273,7 @@ if __name__ == '__main__':
 
 @app.cli.command('init-db')
 def init_db_command():
-    """Initialisiert die Datenbank."""
+    """Initializes the database."""
     db.create_all()
-    print('Die Datenbank wurde erfolgreich initialisiert.')
+    print('The database has been successfully initialized.')
 
