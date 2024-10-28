@@ -1,3 +1,5 @@
 Flask
 markdown
 flask_babel
+flask_sqlalchemy
+
