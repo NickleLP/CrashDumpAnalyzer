@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory, session
+from flask import Flask, request, redirect, url_for, render_template, flash, send_from_directory, session, abort
 from werkzeug.utils import secure_filename
 import subprocess
 import markdown
@@ -8,13 +8,12 @@ from datetime import datetime
 from flask_babel import Babel, gettext as _
 from config import VERSION
 import sys
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urljoin
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-
 app = Flask(__name__)
-app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*443*146*4431*464*31464i4315p453145oi6443165464531'
+app.secret_key = '578493092754320oio6547a32653402tzu174321045d414d5g4d5g314d5644315¨ü6448¨$34ö14$üöäiä643*914*64*op416*43146*443*i1*643i*16*4431*464*31464i4315p453145oi6443165464531'
 app.jinja_env.add_extension('jinja2.ext.i18n')
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ANALYSIS_FOLDER'] = 'analyses'
@@ -45,51 +44,37 @@ class Analysis(db.Model):
     ticket_id = db.Column(db.Integer, db.ForeignKey('ticket.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
 
-# Version read from file
-with open('version.txt', 'r') as f:
-    version = f.read().strip()
-
-@app.context_processor
-def inject_version():
-    return dict(version=version)
-
-
-def validate_url(url):
-    parsed_url = urlparse(url.replace('\\', ''))
-    if parsed_url.path in VALID_REDIRECTS and not parsed_url.query and not parsed_url.fragment:
-        return parsed_url.path
-    return '/'
-
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
-    test_url = urlparse(target)
+    test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 def get_locale():
-    # Überprüfen, ob eine Sprache in der Session gespeichert ist
     lang = session.get('lang', 'en')
-    #print(f"Aktuelle Sprache: {lang}")
+    print(f"Aktuelle Sprache: {lang}")
     return lang
 
 babel = Babel(app, locale_selector=get_locale)
 
 @app.route('/set_language/<language>')
 def set_language(language):
+    if language not in ['en', 'de', 'fr']:  # Add all supported languages here
+        abort(400)  # Bad Request
     session['lang'] = language
     referrer = request.referrer
     if not referrer or not is_safe_url(referrer):
         referrer = url_for('upload_file')
     return redirect(referrer)
 
-# Erstellen der Verzeichnisse, falls sie nicht existieren
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(app.config['ANALYSIS_FOLDER'], exist_ok=True)
+UPLOAD_FOLDER = app.config.get('UPLOAD_FOLDER', '/default/upload/path')
+ANALYSIS_FOLDER = app.config.get('ANALYSIS_FOLDER', '/default/analysis/path')
 
-# Globale Variablen für Tickets
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(ANALYSIS_FOLDER, exist_ok=True)
+
 ticket_number = 1
 tickets = {}
 
-# Erlaubte Dateierweiterungen
 ALLOWED_EXTENSIONS = {'dmp'}
 
 def allowed_file(filename):
@@ -99,7 +84,6 @@ def find_cdb_executable():
     possible_paths = [
         r'C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe',
         r'C:\Program Files\Windows Kits\10\Debuggers\x64\cdb.exe',
-        # Weitere mögliche Pfade hinzufügen
     ]
     for path in possible_paths:
         if os.path.exists(path):
@@ -163,6 +147,7 @@ def analyze_dump(dump_file_path, ticket_number):
             exception_code = exception_code_match.group(1)
         else:
             exception_code = "Unknown error"
+            print("Unbekannter Fehler")
 
         # Debugging-Ausgabe
         # print("Extrahierter Exception-Code:", exception_code)
@@ -179,8 +164,10 @@ def analyze_dump(dump_file_path, ticket_number):
     except subprocess.TimeoutExpired:
         exe_name = _("Analysis canceled") 
         crash_reason = _("The debugger did not respond within the expected time.") 
+        print("Debugger hat nicht geantwortet")
     except Exception as e:
         exe_name = _("Errors in the analysis") 
+        print("Fehler in der Analyse")
         crash_reason = str(e)
 
     return exe_name, crash_reason
@@ -227,6 +214,7 @@ def upload_file():
             db.session.commit()
 
             flash(_('File uploaded and analyzed. Ticket number: ') + str(ticket.id))
+            print("DMP wurde analysiert, Ticket wurde erstellt")
             return redirect(url_for('upload_file'))
         else:
             flash(_('Please upload a valid .dmp file'))
@@ -270,6 +258,7 @@ def view_analysis(ticket_id):
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    print("Programm wurde gestartet mit dem Port {port} ")
 
 @app.cli.command('init-db')
 def init_db_command():
